@@ -30,10 +30,10 @@ for filename in os.listdir(folder_path):
                 if "Feature Byte" in lines[i]:
                     FB = str(lines[i+1].strip())
                     tb1.add_row([SN, BIOS_Ver, PD, FB])
-with open('Summary.txt', 'w', encoding="utf-8") as w:
-    w.write(str(tb1))
 print(tb1)
-
+if len(os.listdir(folder_path)) != 0:
+    with open('Summary.txt', 'w', encoding="utf-8") as w:
+        w.write(str(tb1))
 input()
 
 

@@ -13,6 +13,7 @@ tb1.set_style(pt.SINGLE_BORDER)
 # tb1.set_style(pt.PLAIN_COLUMNS)
 # tb1.set_style(pt.MSWORD_FRIENDLY)
 
+
 tb1.field_names = ["SN#", "System BIOS Version", "Marketing Name", "Feature Byte"]
 folder_path = "./BCU_Files"
 for filename in os.listdir(folder_path):
@@ -42,7 +43,7 @@ def Save_to_TXT():
 
 
 if len(os.listdir(folder_path)) != 0:
-    Save_to_TXT()
+    Save_to_CSV()
 input()
 
 

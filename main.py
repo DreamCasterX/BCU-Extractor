@@ -1,5 +1,6 @@
 import prettytable as pt
 import os
+from prettytable.colortable import ColorTable, Themes
 
 
 tb1 = pt.PrettyTable()
@@ -31,9 +32,17 @@ for filename in os.listdir(folder_path):
                     FB = str(lines[i+1].strip())
                     tb1.add_row([SN, BIOS_Ver, PD, FB])
 print(tb1)
+
+def Save_to_CSV():
+    with open('Summary.csv', 'w', newline='', encoding="utf-8") as w:
+        w.write(str(tb1.get_csv_string()))
+def Save_to_TXT():
+    with open('Summary.txt', 'w', encoding="utf-8") as f:
+        f.write(str(tb1))
+
+
 if len(os.listdir(folder_path)) != 0:
-    with open('Summary.txt', 'w', encoding="utf-8") as w:
-        w.write(str(tb1))
+    Save_to_TXT()
 input()
 
 

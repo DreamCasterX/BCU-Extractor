@@ -34,14 +34,14 @@ for filename in os.listdir(folder_path):
                         SN = str(lines[i+1].strip())
                 if "System BIOS Version" in lines[i]:
                     BIOS = str(lines[i+1].strip())
-                    BIOS_Ver = BIOS[0:17]
+                    BIOS_Ver = BIOS[0:17]   # number only = [8:17]
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())
                     ME_Ver = ME[0:11]
                 if "Feature Byte" in lines[i]:
                     FB = str(lines[i+1].strip())
                     tb1.add_row([PD, SN, BIOS_Ver, ME_Ver, FB])
-# print(tb1)
+print(tb1)
 
 
 def Save_to_TXT():
@@ -68,31 +68,13 @@ if len(os.listdir(folder_path)) != 0:
     for i in data:
         ws.append(i)                  # 逐筆添加到工作表內最後一列
  
-
-
-
-    # 實驗自動對齊欄寬
-    # column_length = len(str(ws['A1'].value))
-   
-    # ws.column_dimensions['A'].width = column_length
-   
-   
-    # for x in range(1, ws.max_column+1):
-    #     for y in range(1, ws.max_row+1):
-    #         all_column = chr(x + 64) + str(y)   # ABCDE + 1~34
-    #         column_length = len(str(ws[all_column].value))  # 取A1~~A34  B1~B34  C1~C34  D1~D34  E1~E34字串長度
-    #         print(f"guoup 1 = {column_length}")
-            
-            
+ 
     # 自動對齊欄寬 (可用 但不完美)
-    for column in ws.columns:
-        max_length = 0
-        column_letter = column[0].column_letter
-        for cell in column:
-            if len(str(cell.value)) > max_length:
-                max_length = len(str(cell.value))
-                adjusted_width = (max_length) * 1.2
-                ws.column_dimensions[column_letter].width = adjusted_width
+    for column_cells in ws.columns:
+        new_column_letter = get_column_letter(column_cells[0].column)
+        new_column_length = max(len(str(cell.value)) for cell in column_cells)
+        if new_column_length > 0:
+            ws.column_dimensions[new_column_letter].width = new_column_length * 1.21
         
 
    # 添加邊框
@@ -114,10 +96,7 @@ if len(os.listdir(folder_path)) != 0:
                 cell.fill = fill
                 cell.font = font
 
+
     wb.save('Summary.xlsx')
     os.remove("./Summary.csv")
     
-
-
-
-

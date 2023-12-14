@@ -1,6 +1,6 @@
 import prettytable as pt
 import os
-from prettytable.colortable import ColorTable, Themes
+# from prettytable.colortable import ColorTable, Themes
 import csv
 from openpyxl.workbook import Workbook
 from openpyxl.utils import get_column_letter
@@ -26,24 +26,31 @@ for filename in os.listdir(folder_path):
     if filename.endswith(".txt"):
         with open(os.path.join(folder_path, filename), "r") as file:
             lines = file.readlines()
+            PD, SN, BIOS, ME, TBT, FB = "", "", "", "", "", ""
+            found_serial_number = False  # 判斷是否已經找到第一組"Serial Number"
             for i in range(len(lines)):
                 if "Product Name" in lines[i]:
                     PD = str(lines[i+1].strip())
-                if "Primary Battery Serial Number" not in lines[i]:
-                    if "Serial Number" in lines[i]:
-                        SN = str(lines[i+1].strip())
+                if "Serial Number" in lines[i] and not found_serial_number:
+                    SN = str(lines[i+1].strip())
+                    found_serial_number = True  # 找到第一組"Serial Number"時設定為True不繼續向下找
+                # if "Primary Battery Serial Number" not in lines[i]:
+                #     if "Secure Erase Hard Disk Serial Number" not in lines[i]:
+                #         if "Serial Number" in lines[i]:
+                #             SN = str(lines[i+1].strip())
                 if "System BIOS Version" in lines[i]:
-                    BIOS = str(lines[i+1].strip())
-                    BIOS_Ver = BIOS[0:17]   # number only = [8:17]
+                    BIOS = str(lines[i+1].strip())[0:17]  # number only = [8:17]
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())
-                    ME_Ver = ME[0:11]
                 if "Intel(R) Thunderbolt Retimer FW version" in lines[i]:
                     TBT = str(lines[i+1].strip())
-                    TBT_Ver = TBT[0:12]
                 if "Feature Byte" in lines[i]:
                     FB = str(lines[i+1].strip())
-                    tb1.add_row([PD, SN, BIOS_Ver, ME_Ver, TBT_Ver, FB])
+            if not ME:   # 顯示為空字串
+                ME = "N/A"
+            if not TBT:  # 顯示為空字串
+                TBT = "N/A"
+            tb1.add_row([PD, SN, BIOS, ME, TBT, FB])
 print(tb1)
 
 

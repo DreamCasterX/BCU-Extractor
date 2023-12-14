@@ -100,3 +100,4 @@ if len(os.listdir(folder_path)) != 0:
     wb.save('Summary.xlsx')
     os.remove("./Summary.csv")
     
+input()

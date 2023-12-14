@@ -20,7 +20,7 @@ tb1.set_style(pt.SINGLE_BORDER)
 
 
 # 定義欄位格式&擷取TXT檔特定內容
-tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "ME Firmware", "Feature Byte"]
+tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "ME FW", "TBT FW", "Feature Byte"]
 folder_path = "./BCU_Files"
 for filename in os.listdir(folder_path):
     if filename.endswith(".txt"):
@@ -38,9 +38,12 @@ for filename in os.listdir(folder_path):
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())
                     ME_Ver = ME[0:11]
+                if "Intel(R) Thunderbolt Retimer FW version" in lines[i]:
+                    TBT = str(lines[i+1].strip())
+                    TBT_Ver = TBT[0:12]
                 if "Feature Byte" in lines[i]:
                     FB = str(lines[i+1].strip())
-                    tb1.add_row([PD, SN, BIOS_Ver, ME_Ver, FB])
+                    tb1.add_row([PD, SN, BIOS_Ver, ME_Ver, TBT_Ver, FB])
 print(tb1)
 
 

@@ -1,8 +1,8 @@
 # BCU-Extrator
 
-Version: 1.2
+Version: 1.3
 
-Build Date: 2023/12/14
+Build Date: 2024/01/08
 
 #
 [How to use]

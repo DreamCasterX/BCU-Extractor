@@ -20,13 +20,13 @@ tb1.set_style(pt.SINGLE_BORDER)
 
 
 # 定義欄位格式&擷取TXT檔特定內容
-tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "ME FW", "TBT FW", "Feature Byte"]
+tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "EC FW", "ME FW", "TBT FW", "Feature Byte"]
 folder_path = "./BCU_Files"
 for filename in os.listdir(folder_path):
     if filename.endswith(".txt"):
         with open(os.path.join(folder_path, filename), "r") as file:
             lines = file.readlines()
-            PD, SN, BIOS, ME, TBT, FB = "", "", "", "", "", ""
+            PD, SN, BIOS, EC, ME, TBT, FB = "", "", "", "", "", "", ""
             found_serial_number = False  # 判斷是否已經找到第一組"Serial Number"
             for i in range(len(lines)):
                 if "Product Name" in lines[i]:
@@ -40,6 +40,8 @@ for filename in os.listdir(folder_path):
                 #             SN = str(lines[i+1].strip())
                 if "System BIOS Version" in lines[i]:
                     BIOS = str(lines[i+1].strip())[0:17]  # number only = [8:17]
+                if "Embedded Controller" in lines[i]:
+                    EC = str(lines[i+1].strip())
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())
                 if "Intel(R) Thunderbolt Retimer FW version" in lines[i]:
@@ -50,7 +52,7 @@ for filename in os.listdir(folder_path):
                 ME = "N/A"
             if not TBT:  # 顯示為空字串
                 TBT = "N/A"
-            tb1.add_row([PD, SN, BIOS, ME, TBT, FB])
+            tb1.add_row([PD, SN, BIOS, EC, ME, TBT, FB])
 print(tb1)
 
 

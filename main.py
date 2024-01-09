@@ -23,7 +23,7 @@ tb1.set_style(pt.SINGLE_BORDER)
 tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "EC", "ME FW", "TBT FW", "Feature Byte"]
 folder_path = "./BCU_Files"
 for filename in os.listdir(folder_path):
-    if filename.endswith(".txt"):
+    if filename.endswith((".txt", ".TXT")):
         with open(os.path.join(folder_path, filename), "r") as file:
             lines = file.readlines()
             PD, SN, BIOS, EC, ME, TBT, FB = "", "", "", "", "", "", ""
@@ -32,19 +32,16 @@ for filename in os.listdir(folder_path):
                 if "Product Name" in lines[i]:
                     PD = str(lines[i+1].strip())
                 if "Serial Number" in lines[i] and not found_serial_number:
-                    SN = str(lines[i+1].strip())
-                    found_serial_number = True  # 找到第一組"Serial Number"時設定為True不繼續向下找
-                # if "Primary Battery Serial Number" not in lines[i]:
-                #     if "Secure Erase Hard Disk Serial Number" not in lines[i]:
-                #         if "Serial Number" in lines[i]:
-                #             SN = str(lines[i+1].strip())
+                    if "Secure Erase Hard Disk Serial Number" not in lines[i] and "Primary Battery Serial Number" not in lines[i]:
+                        SN = str(lines[i+1].strip())
+                        found_serial_number = True  # 找到第一組"Serial Number"時設定為True不繼續向下找
                 if "System BIOS Version" in lines[i]:
                     BIOS = str(lines[i+1].strip())[0:17]  # number only = [8:17]
                 if "Embedded Controller" in lines[i]:
                     EC = str(lines[i+1].strip())
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())
-                if "Intel(R) Thunderbolt Retimer FW version" in lines[i]:
+                if "Intel(R) Thunderbolt Retimer FW version" in lines[i]:  # Linux上顯示Thunderbolt Controller Version
                     TBT = str(lines[i+1].strip())
                 if "Feature Byte" in lines[i]:
                     FB = str(lines[i+1].strip())
@@ -56,9 +53,9 @@ for filename in os.listdir(folder_path):
 print(tb1)
 
 
-def Save_to_TXT():
-    with open('Summary.txt', 'w', encoding="utf-8") as f:
-        f.write(str(tb1))
+# def Save_to_TXT():
+#     with open('Summary.txt', 'w', encoding="utf-8") as f:
+#         f.write(str(tb1))
         
 def Save_to_CSV():
     with open('Summary.csv', 'w', newline='', encoding="utf-8") as w:

@@ -37,7 +37,7 @@ for filename in os.listdir(folder_path):
                         found_serial_number = True  # 找到第一組"Serial Number"時設定為True不繼續向下找
                 if "System BIOS Version" in lines[i]:
                     BIOS = str(lines[i+1].strip())[0:17]  # number only = [8:17]
-                if "Embedded Controller" in lines[i]:
+                if "Embedded Controller Firmware Version" in lines[i]:
                     EC = str(lines[i+1].strip())
                 if "ME Firmware Version" in lines[i]:
                     ME = str(lines[i+1].strip())

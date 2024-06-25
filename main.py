@@ -22,6 +22,15 @@ tb1.set_style(pt.SINGLE_BORDER)
 # 定義欄位格式&擷取TXT檔特定內容
 tb1.field_names = ["Marketing Name", "S/N", "System BIOS", "EC", "ME FW", "TBT FW", "Feature Byte"]
 folder_path = "./BCU_Files"
+if not os.path.exists(folder_path):
+    os.mkdir(folder_path)
+    BCU_files = os.listdir(folder_path)
+    if not BCU_files:
+        print(f"\033[33mNo files in BCU_Files folder\033[0m\r\n\n")
+        os.system("pause")
+        exit()
+
+
 for filename in os.listdir(folder_path):
     if filename.endswith((".txt", ".TXT")):
         with open(os.path.join(folder_path, filename), "r") as file:
